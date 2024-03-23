@@ -42,9 +42,6 @@ export function Login() {
                            onChange={(e) => setPassword(e.target.value)}
                 />
                 <br/>
-                {errorMessage && (
-                    <p className="error-message">{errorMessage}</p>
-                )}
                 <div className="button-container">
                     <button type="submit" id="create">Login</button>
                 </div>
