@@ -10,6 +10,7 @@ export function Check() {
         suspicious: 0,
         undetected: 0
     });
+    const [checkStatus, setCheckStatus] = useState<Boolean>(false)
     const inputRef: any = useRef()
 
     const handleDragOver = (event: any) => {
@@ -28,6 +29,7 @@ export function Check() {
                     const response = await checkFile(files[0]);
                     const json = await response.json();
                     setFileStatus(json);
+                    setCheckStatus(true)
                 } catch (error) {
                     console.error("Error fetching file status:", error);
                 }
@@ -37,7 +39,7 @@ export function Check() {
         getResultResp().then(r => r);
     }, [files]);
 
-    if (files) {
+    if (checkStatus) {
         return (
             <div className="uploads">
                 <h1>JSON</h1>
@@ -45,7 +47,7 @@ export function Check() {
                     <div>
                         <p>suspicious: {fileStatus.suspicious}</p>
                         <p>malicious: {fileStatus.malicious}</p>
-                        <p>suspicious: {fileStatus.undetected}</p>
+                        <p>undetected: {fileStatus.undetected}</p>
                     </div>
                 }
             </div>

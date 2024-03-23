@@ -11,6 +11,7 @@ export function Save() {
         suspicious: 0,
         undetected: 0
     });
+    const [checkStatus, setCheckStatus] = useState<Boolean>(false)
     const inputRef: any = useRef()
     const navigate = useNavigate();
 
@@ -30,6 +31,7 @@ export function Save() {
                     const response = await saveFile(files[0]);
                     const json = await response.json();
                     setFileStatus(json);
+                    setCheckStatus(true)
                 } catch (error) {
                     console.error("Error fetching file status:", error);
                 }
@@ -39,7 +41,7 @@ export function Save() {
         getResultResp().then(r => r);
     }, [files]);
 
-    if (files) {
+    if (checkStatus) {
         if (fileStatus.malicious > 0 || fileStatus.suspicious > 0) {
             return (
                 <div className="uploads">
@@ -48,7 +50,7 @@ export function Save() {
                         <div>
                             <p>suspicious: {fileStatus.suspicious}</p>
                             <p>malicious: {fileStatus.malicious}</p>
-                            <p>suspicious: {fileStatus.undetected}</p>
+                            <p>undetected: {fileStatus.undetected}</p>
                         </div>
                     }
                 </div>

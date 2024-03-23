@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {login} from "../../services/AuthService";
-import {TextField} from "@mui/material";
+import {Button, TextField} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
 export function Login() {
@@ -43,9 +43,9 @@ export function Login() {
                 />
                 <br/>
                 <div className="button-container">
-                    <button type="submit" id="create">Login</button>
+                    <Button type="submit" id="create">Login</Button>
                 </div>
-                <a className="register" href="http://localhost:3000/registration">Register</a>
+                <Button className="register" href="http://localhost:3000/registration">Register</Button>
             </form>
         </div>
     </div>)

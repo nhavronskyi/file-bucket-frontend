@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {register} from "../../services/AuthService";
-import {TextField} from "@mui/material";
+import {Button, TextField} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
 export function Registration() {
@@ -72,7 +72,7 @@ export function Registration() {
                     <p className="error-message">{errorMessage}</p>
                 )}
                 <div className="button-container">
-                    <button type="submit" id="create">Registration</button>
+                    <Button type="submit" id="create">Registration</Button>
                 </div>
             </form>
         </div>
