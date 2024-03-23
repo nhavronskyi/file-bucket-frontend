@@ -6,7 +6,6 @@ import {useNavigate} from "react-router-dom";
 export function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
 
     const handleLogin = async (e: React.FormEvent) => {
@@ -19,7 +18,7 @@ export function Login() {
         const json = JSON.parse(await response.text())
 
         localStorage.setItem('token', json.token)
-        navigate('/files')
+        navigate('/check')
     }
 
     return (<div className="login-register-container login-page">
@@ -34,7 +33,7 @@ export function Login() {
                            }}
                            onChange={(e) => setEmail(e.target.value)}/>
                 <br/>
-                <TextField name="password" fullWidth label="Пароль"
+                <TextField name="password" fullWidth label="Password"
                            type="password" variant="standard" value={password}
                            style={{marginBottom: '15px'}}
                            InputLabelProps={{

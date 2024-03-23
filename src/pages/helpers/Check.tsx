@@ -1,42 +1,52 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Box, Button} from "@mui/material";
 import {checkFile} from "../../services/FileService";
 import {FileStatus} from "../../interfaces/FileStatus";
 
 export function Check() {
     const [files, setFiles] = useState(null)
-    const [fileNames, setFileName] = useState<FileStatus[]>([]);
+    const [fileStatus, setFileStatus] = useState<FileStatus>({
+        malicious: 0,
+        suspicious: 0,
+        undetected: 0
+    });
     const inputRef: any = useRef()
 
     const handleDragOver = (event: any) => {
         event.preventDefault();
-    }
+    };
 
     const handleDrop = (event: any) => {
         event.preventDefault();
-        setFiles(event.dataTransfer.files)
-    }
-    const getResultResp = async () => {
-        if (files) {
-            await checkFile(files[0]).then(x => x.json())
-                .then(json => setFileName(json));
-        }
-    }
+        setFiles(event.dataTransfer.files);
+    };
+
+    useEffect(() => {
+        const getResultResp = async () => {
+            if (files) {
+                try {
+                    const response = await checkFile(files[0]);
+                    const json = await response.json();
+                    setFileStatus(json);
+                } catch (error) {
+                    console.error("Error fetching file status:", error);
+                }
+            }
+        };
+
+        getResultResp().then(r => r);
+    }, [files]);
 
     if (files) {
-        getResultResp().then(r => r);
         return (
             <div className="uploads">
                 <h1>JSON</h1>
                 {
-                    fileNames.map((file: FileStatus) => (
-                            <div>
-                                <p>suspicious: {file.suspicious}</p>
-                                <p>malicious: {file.malicious}</p>
-                                <p>suspicious: {file.undetected}</p>
-                            </div>
-                        )
-                    )
+                    <div>
+                        <p>suspicious: {fileStatus.suspicious}</p>
+                        <p>malicious: {fileStatus.malicious}</p>
+                        <p>suspicious: {fileStatus.undetected}</p>
+                    </div>
                 }
             </div>
         )
@@ -47,6 +57,7 @@ export function Check() {
              onDragOver={handleDragOver}
              onDrop={handleDrop}
         >
+            <h1>CHECK FILE</h1>
             <h1>Drag and Drop Files to Upload</h1>
             <h1>Or</h1>
             <input

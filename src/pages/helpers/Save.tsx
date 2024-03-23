@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Box, Button} from "@mui/material";
 import {saveFile} from "../../services/FileService";
 import {FileStatus} from "../../interfaces/FileStatus";
@@ -6,46 +6,53 @@ import {useNavigate} from "react-router-dom";
 
 export function Save() {
     const [files, setFiles] = useState(null)
-    const [fileStatuses, setFileName] = useState<FileStatus[]>([]);
+    const [fileStatus, setFileStatus] = useState<FileStatus>({
+        malicious: 0,
+        suspicious: 0,
+        undetected: 0
+    });
     const inputRef: any = useRef()
     const navigate = useNavigate();
 
     const handleDragOver = (event: any) => {
         event.preventDefault();
-    }
+    };
 
     const handleDrop = (event: any) => {
         event.preventDefault();
-        setFiles(event.dataTransfer.files)
-    }
-    const getResultResp = async () => {
-        if (files) {
-            await saveFile(files[0]).then(x => x.json())
-                .then(json => setFileName(json));
-        }
-    }
+        setFiles(event.dataTransfer.files);
+    };
+
+    useEffect(() => {
+        const getResultResp = async () => {
+            if (files) {
+                try {
+                    const response = await saveFile(files[0]);
+                    const json = await response.json();
+                    setFileStatus(json);
+                } catch (error) {
+                    console.error("Error fetching file status:", error);
+                }
+            }
+        };
+
+        getResultResp().then(r => r);
+    }, [files]);
 
     if (files) {
-        getResultResp().then(r => r);
-
-        for (let fileStatus of fileStatuses) {
-            if (fileStatus.malicious > 0 || fileStatus.suspicious > 0) {
-                return (
-                    <div className="uploads">
-                        <h1>JSON</h1>
-                        {
-                            fileStatuses.map((file: FileStatus) => (
-                                    <div>
-                                        <p>suspicious: {file.suspicious}</p>
-                                        <p>malicious: {file.malicious}</p>
-                                        <p>suspicious: {file.undetected}</p>
-                                    </div>
-                                )
-                            )
-                        }
-                    </div>
-                )
-            }
+        if (fileStatus.malicious > 0 || fileStatus.suspicious > 0) {
+            return (
+                <div className="uploads">
+                    <h1>JSON</h1>
+                    {
+                        <div>
+                            <p>suspicious: {fileStatus.suspicious}</p>
+                            <p>malicious: {fileStatus.malicious}</p>
+                            <p>suspicious: {fileStatus.undetected}</p>
+                        </div>
+                    }
+                </div>
+            )
         }
 
         navigate('/files')
@@ -56,6 +63,7 @@ export function Save() {
              onDragOver={handleDragOver}
              onDrop={handleDrop}
         >
+            <h1>SAVE FILE</h1>
             <h1>Drag and Drop Files to Upload</h1>
             <h1>Or</h1>
             <input

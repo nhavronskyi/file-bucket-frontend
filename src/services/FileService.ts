@@ -1,13 +1,12 @@
 const url: string = "http://localhost:8080/files";
 
-const headers = {
+const AuthHeader = {
     "Authorization": `Bearer ${localStorage.getItem('token')}`,
-    "Content-Type": "application/json"
 };
 
 export const getAllFilesBasicInfo = () => {
     return fetch(`${url}/get-all`, {
-        headers: headers
+        headers: AuthHeader
     })
 }
 
@@ -23,8 +22,8 @@ export const checkFile = (file: File) => {
 export const saveFile = (file: File) => {
     const formdata = new FormData();
     formdata.append("file", file);
-    return fetch(`${url}/check`, {
-        headers: headers,
+    return fetch(`${url}/save`, {
+        headers: AuthHeader,
         method: "POST",
         body: formdata,
     })

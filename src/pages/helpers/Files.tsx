@@ -7,8 +7,12 @@ export function Files() {
     const [files, setFiles] = useState<BasicFile[]>([]);
 
     useEffect((): void => {
-        getAllFilesBasicInfo().then(response => response.json())
-            .then(json => setFiles(json));
+        const allFilesInfo = async () => {
+            await getAllFilesBasicInfo().then(response => response.json())
+                .then(json => setFiles(json));
+        }
+
+        allFilesInfo().then(r => r)
     }, []);
 
     return (<Box>

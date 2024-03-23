@@ -4,8 +4,6 @@ import {TextField} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
 export function Registration() {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -27,8 +25,7 @@ export function Registration() {
             if (response.ok) {
                 const responseText = await response.text();
                 if (responseText.length !== 0) {
-                    localStorage.setItem('token', responseText);
-                    navigate(`/files`);
+                    navigate(`/login`);
                     window.scrollTo(0, 0);
                 } else {
                     setErrorMessage("User with this email already exists");
