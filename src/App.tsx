@@ -6,6 +6,7 @@ import FilesPage from "./pages/FilesPage";
 import RegistrationPage from "./pages/RegistrationPage";
 import CheckPage from "./pages/CheckPage";
 import SavingPage from "./pages/SavingPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
     return (
@@ -16,7 +17,9 @@ function App() {
                 <Route path="/registration" element={<RegistrationPage/>}/>
                 <Route path="/files" element={<FilesPage/>}/>
                 <Route path="/check" element={<CheckPage/>}/>
+                <Route path="/" element={<CheckPage/>}/>
                 <Route path="/save" element={<SavingPage/>}/>
+                <Route path="/*" element={<NotFoundPage/>}/>
             </Routes>
         </BrowserRouter>
     );
