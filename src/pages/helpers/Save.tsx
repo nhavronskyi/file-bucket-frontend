@@ -25,20 +25,24 @@ export function Save() {
     };
 
     useEffect(() => {
-        const getResultResp = async () => {
-            if (files) {
-                try {
-                    const response = await saveFile(files[0]);
-                    const json = await response.json();
-                    setFileStatus(json);
-                    setCheckStatus(true)
-                } catch (error) {
-                    console.error("Error fetching file status:", error);
+        if (localStorage.getItem('token') === null) {
+            navigate('/check')
+        } else {
+            const getResultResp = async () => {
+                if (files) {
+                    try {
+                        const response = await saveFile(files[0]);
+                        const json = await response.json();
+                        setFileStatus(json);
+                        setCheckStatus(true)
+                    } catch (error) {
+                        console.error("Error fetching file status:", error);
+                    }
                 }
-            }
-        };
+            };
 
-        getResultResp().then(r => r);
+            getResultResp().then(r => r);
+        }
     }, [files]);
 
     if (checkStatus) {

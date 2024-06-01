@@ -2,17 +2,23 @@ import React, {useEffect, useState} from "react";
 import {Box, Grid} from "@mui/material";
 import {BasicFile} from "../../interfaces/BasicFile";
 import {getAllFilesBasicInfo} from "../../services/FileService";
+import {useNavigate} from "react-router-dom";
 
 export function Files() {
     const [files, setFiles] = useState<BasicFile[]>([]);
-
+    const navigate = useNavigate();
     useEffect((): void => {
-        const allFilesInfo = async () => {
-            await getAllFilesBasicInfo().then(response => response.json())
-                .then(json => setFiles(json));
-        }
 
-        allFilesInfo().then(r => r)
+        if (localStorage.getItem('token') === null) {
+            navigate('/check')
+        } else {
+
+            const allFilesInfo = async () => {
+                await getAllFilesBasicInfo().then(response => response.json())
+                    .then(json => setFiles(json));
+            }
+            allFilesInfo().then(r => r)
+        }
     }, []);
 
     return (<Box>

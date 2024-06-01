@@ -28,3 +28,15 @@ export const saveFile = (file: File) => {
         body: formdata,
     })
 }
+
+export const getFile = (fileName: string) => {
+    return fetch(`${url}/get-file?key=${fileName}`, {
+        headers: AuthHeader
+    })
+}
+export const deleteFile = (fileName: string) => {
+    return fetch(`${url}/get-file?key=${fileName}`, {
+        method: "DELETE",
+        headers: AuthHeader
+    })
+}
