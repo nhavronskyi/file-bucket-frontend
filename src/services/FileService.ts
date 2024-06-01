@@ -35,7 +35,7 @@ export const getFile = (fileName: string) => {
     })
 }
 export const deleteFile = (fileName: string) => {
-    return fetch(`${url}/get-file?key=${fileName}`, {
+    return fetch(`${url}?key=${fileName}`, {
         method: "DELETE",
         headers: AuthHeader
     })
